@@ -1,7 +1,10 @@
-var BookingService = (function() {
+var BookingService = (function () {
+    var priceCalculator = new PriceService();
+    function checkPrice(booking) {
+        return priceCalculator.getPriceOf(booking);
+    }
+
     return {
-        checkPrice: function(booking) {
-            return 30;
-        }
+        checkPrice: checkPrice
     }
 }());
