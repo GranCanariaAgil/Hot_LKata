@@ -32,10 +32,13 @@ var PriceService = (function () {
     function totalServicesPriceFor(booking) {
         var bookingServices = booking.getServices();
         if(bookingServices.length == 0) return 0;
-        var servicesToPay = remove(servicesIncludeFor[booking.getRoomType()]).from(bookingServices);
+        var notIncludedServices = remove(servicesIncludeFor[booking.getRoomType()]).from(bookingServices);
+        return calculateTotalPriceFor(notIncludedServices);
+    }
 
+    function calculateTotalPriceFor(notIncludedServices) {
         var total = 0;
-        servicesToPay.forEach( function(service) {total += servicesPriceFor[service];} );
+        notIncludedServices.forEach(function (service) {total += servicesPriceFor[service];} );
         return total;
     }
 
