@@ -27,4 +27,3 @@ describe("given a date when the hotel is empty", function () {
         });
     });
 });
-
