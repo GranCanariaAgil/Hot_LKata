@@ -4,7 +4,7 @@ var PriceService = (function () {
         "suite": 58
     };
 
-    var servicesIncludeFor = {
+    var servicesIncludedFor = {
         "nuptial suite": [Services.WIFI, Services.EARLY_CHECK_IN, Services.LATE_CHECKOUT, Services.LAUNDRY],
         "suite": [Services.WIFI, Services.LATE_CHECKOUT]
     };
@@ -21,8 +21,8 @@ var PriceService = (function () {
         return {
             from: function (allBookingServices) {
                 var res = [];
-                allBookingServices.forEach(function(service){
-                    if(!includedServices[service]) res.push(service);
+                allBookingServices.forEach(function (service) {
+                    if (!includedServices[service]) res.push(service);
                 });
                 return res;
             }
@@ -31,14 +31,11 @@ var PriceService = (function () {
 
     function totalServicesPriceFor(booking) {
         var bookingServices = booking.getServices();
-        if(bookingServices.length == 0) return 0;
-        var servicesToPay = remove(servicesIncludeFor[booking.getRoomType()]).from(bookingServices);
-
-        var total = servicesToPay.reduce(function(accumulatePrice, service, index, arrayValue){
+        if (bookingServices.length == 0) return 0;
+        var servicesToPay = remove(servicesIncludedFor[booking.getRoomType()]).from(bookingServices);
+        return servicesToPay.reduce(function (accumulatePrice, service, index, services) {
             return accumulatePrice += servicesPriceFor[service];
-        });
-
-        return total;
+        }, 0);
     }
 
     function getPriceOf(booking) {
