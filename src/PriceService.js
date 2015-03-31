@@ -22,7 +22,7 @@ var PriceService = (function () {
             from: function (allBookingServices) {
                 var res = [];
                 allBookingServices.forEach(function(service){
-                    if(!includedServices[service]) res.push(service);
+                    if(includedServices.indexOf(service) == -1) res.push(service);
                 });
                 return res;
             }
@@ -32,12 +32,13 @@ var PriceService = (function () {
     function totalServicesPriceFor(booking) {
         var bookingServices = booking.getServices();
         if(bookingServices.length == 0) return 0;
-        var servicesToPay = remove(servicesIncludeFor[booking.getRoomType()]).from(bookingServices);
+        var notIncludedServices = remove(servicesIncludeFor[booking.getRoomType()]).from(bookingServices);
+        return calculateTotalPriceFor(notIncludedServices);
+    }
 
-        var total = servicesToPay.reduce(function(accumulatePrice, service, index, arrayValue){
-            return accumulatePrice += servicesPriceFor[service];
-        });
-
+    function calculateTotalPriceFor(notIncludedServices) {
+        var total = 0;
+        notIncludedServices.forEach(function (service) {total += servicesPriceFor[service];} );
         return total;
     }
 
